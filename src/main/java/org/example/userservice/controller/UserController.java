@@ -45,4 +45,9 @@ public class UserController {
     public ResponseEntity<?> filterByDob(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByDob(dob));
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> sampleUser(){
+        return ResponseEntity.status(HttpStatus.OK).body("Sample User for testing.");
+    }
 }
