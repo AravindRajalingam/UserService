@@ -45,4 +45,9 @@ public class UserController {
     public ResponseEntity<?> filterByDob(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByDob(dob));
     }
+
+    @GetMapping("/byYear")
+    public ResponseEntity<?> filterByYear(@RequestParam int year){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByYear(year));
+    }
 }
