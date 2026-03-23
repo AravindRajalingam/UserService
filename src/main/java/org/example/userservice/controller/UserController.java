@@ -16,11 +16,8 @@ public class UserController {
 
     private final UserService userService;
 
-    private final JwtUtil jwtUtil;
-
     public UserController(UserService userService,JwtUtil jwtUtil) {
         this.userService = userService;
-        this.jwtUtil=jwtUtil;
     }
 
     @GetMapping("/getAll")
