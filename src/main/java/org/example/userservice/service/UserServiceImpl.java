@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserByDob(Date dob) {
         return userRepository.findAll(Specification.where(UserSpecification.byDob(dob)));
     }
+
+    @Override
+    public List<User> getUserByYear(int year) {
+        return userRepository.findAll(Specification.where(UserSpecification.byYear(year)));
+    }
 }

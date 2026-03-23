@@ -46,8 +46,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByDob(dob));
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<?> sampleUser(){
-        return ResponseEntity.status(HttpStatus.OK).body("Sample User for testing.");
+    @GetMapping("/byYear")
+    public ResponseEntity<?> filterByYear(@RequestParam int year){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByYear(year));
     }
 }

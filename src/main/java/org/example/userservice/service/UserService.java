@@ -11,4 +11,5 @@ public interface UserService {
     Optional<User> userNameById(String userId);
     List<User> getUsersByDept(String dept,Date dob,int year);
     List<User> getUserByDob(Date dob);
+    List<User> getUserByYear(int year);
 }
