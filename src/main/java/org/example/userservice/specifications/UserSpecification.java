@@ -18,4 +18,9 @@ public class UserSpecification {
             return builder.greaterThan(root.get("dob"),dob);
         });
     }
+    public static Specification<User> byYear(int year){
+        return ((root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("curr_year"),year);
+        });
+    }
 }
