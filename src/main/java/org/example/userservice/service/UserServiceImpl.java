@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByDept(String dept,Date dob,int year) {
-        return userRepository.findAll(Specification.where(UserSpecification.byDept(dept).or(UserSpecification.byYear(year))).and(UserSpecification.byDob(dob)));
+        return userRepository.findAll(Specification.where(UserSpecification.byDept(dept).and(UserSpecification.byYear(year))).and(UserSpecification.byDob(dob)));
     }
 
     @Override
