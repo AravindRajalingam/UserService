@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @GetMapping("/byDept")
-    public ResponseEntity<?> filterByDept(@RequestParam String dept,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByDept(dept,dob));
+    public ResponseEntity<?> filterByDept(@RequestParam String dept,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,@RequestParam int year){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByDept(dept,dob,year));
     }
 
     @GetMapping("/byDob/{dob}")

@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface UserService {
     List<User> getAll();
     Optional<User> userNameById(String userId);
-    List<User> getUsersByDept(String dept,Date dob);
+    List<User> getUsersByDept(String dept,Date dob,int year);
     List<User> getUserByDob(Date dob);
 }
