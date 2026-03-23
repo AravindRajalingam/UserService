@@ -50,4 +50,9 @@ public class UserController {
     public ResponseEntity<?> filterByYear(@RequestParam int year){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByYear(year));
     }
+
+    @GetMapping("/sample")
+    public ResponseEntity<?> sample(){
+        return ResponseEntity.status(HttpStatus.OK).body("Sample endpoint");
+    }
 }
