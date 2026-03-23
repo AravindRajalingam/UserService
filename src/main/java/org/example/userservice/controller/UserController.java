@@ -55,4 +55,9 @@ public class UserController {
     public ResponseEntity<?> sample(){
         return ResponseEntity.status(HttpStatus.OK).body("Sample endpoint");
     }
+
+    @GetMapping("/api")
+    public ResponseEntity<?> response(){
+        return ResponseEntity.status(HttpStatus.OK).body("Response");
+    }
 }
