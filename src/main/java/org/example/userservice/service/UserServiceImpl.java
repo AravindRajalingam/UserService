@@ -1,10 +1,14 @@
 package org.example.userservice.service;
 
+import org.apache.logging.log4j.Logger;
+import org.example.userservice.dto.Orders;
 import org.example.userservice.feign.OrderClient;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
+import org.example.userservice.response.OrderResponse;
 import org.example.userservice.response.UserAndOrders;
 import org.example.userservice.specifications.UserSpecification;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Cacheable(value = "user",key = "{#dept,#dob,#year}")
-    public List<User> getUsersByMulAttributes(String dept, Date dob, int year) {
+    public List<User> getUsersByMulAttributes(String dept,Date dob,int year) {
         LoggerFactory.getLogger(UserServiceImpl.class).info("Fetching from DB....");
         final Specification<User> spec=Specification.where(UserSpecification.byDept(dept)
                 .and(UserSpecification.byYear(year))
@@ -57,7 +61,6 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserByYear(int year) {
         return userRepository.findAll(Specification.where(UserSpecification.byYear(year)));
     }
-
     @Override
     @CacheEvict(value = "user", key = "{#dept,#dob,#year}" ,beforeInvocation = true)
     public void deleteFromCacheUsersByDept(String dept,Date dob,int year) {
@@ -85,11 +88,25 @@ public class UserServiceImpl implements UserService {
 //            assert false;
             userAndOrders.setUser_id(user.getStudent_id());
             userAndOrders.setUsername(user.getStudent_name());
-            userAndOrders.setOrders(orderClient.ordersById(user.getStudent_id()));
+            List<Orders> orders=orderClient.ordersById(user.getStudent_id());
+            List<OrderResponse> orderResponses = getOrderResponses(orders);
+            userAndOrders.setOrders(orderResponses);
             res.add(userAndOrders);
         }
         return res;
     }
 
-
+    private static @NonNull List<OrderResponse> getOrderResponses(List<Orders> orders) {
+        List<OrderResponse> orderResponses=new ArrayList<>();
+        for(Orders order: orders){
+            OrderResponse orderResponse=new OrderResponse();
+            String date= order.getOrder_day() +"-"+order.getOrder_month()+"-"+order.getOrder_year();
+            orderResponse.setOrder_id(order.getOrder_id());
+            orderResponse.setItem(order.getItem());
+            orderResponse.setQuantity(order.getQuantity());
+            orderResponse.setOrder_date(date);
+            orderResponses.add(orderResponse);
+        }
+        return orderResponses;
+    }
 }
