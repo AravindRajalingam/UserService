@@ -1,8 +1,11 @@
 package org.example.userservice.service;
 
+import org.apache.logging.log4j.Logger;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
 import org.example.userservice.specifications.UserSpecification;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "user",key = "{#dept,#dob,#year}")
     public List<User> getUsersByDept(String dept,Date dob,int year) {
+        LoggerFactory.getLogger(UserServiceImpl.class).info("Fetching from DB....");
         return userRepository.findAll(Specification.where(UserSpecification.byDept(dept).and(UserSpecification.byYear(year))).and(UserSpecification.byDob(dob)));
     }
 
