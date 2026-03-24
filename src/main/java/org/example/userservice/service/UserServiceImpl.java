@@ -1,6 +1,5 @@
 package org.example.userservice.service;
 
-import org.apache.logging.log4j.Logger;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
 import org.example.userservice.specifications.UserSpecification;
