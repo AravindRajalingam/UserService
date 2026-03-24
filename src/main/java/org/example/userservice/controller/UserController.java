@@ -2,8 +2,6 @@ package org.example.userservice.controller;
 
 import org.example.userservice.util.JwtUtil;
 import org.example.userservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +34,7 @@ public class UserController {
 
     @GetMapping("/byDept")
     public ResponseEntity<?> filterByDept(@RequestParam String dept,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,@RequestParam int year){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByDept(dept,dob,year));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByMulAttributes(dept,dob,year));
     }
 
     @GetMapping("/byDob/{dob}")
@@ -63,5 +61,15 @@ public class UserController {
     @DeleteMapping("/deleteAllCache")
     public ResponseEntity<?> deleteAll(){
         return ResponseEntity.status(HttpStatus.OK).body(userService.removeAllCache());
+    }
+
+    @GetMapping("/userByDept")
+    public ResponseEntity<?> userByDept(@RequestParam String dept){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByDept(dept));
+    }
+
+    @GetMapping("/usersWithOrders")
+    public ResponseEntity<?> usersWithOrders(@RequestParam String dept){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(dept));
     }
 }
