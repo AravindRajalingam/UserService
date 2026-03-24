@@ -3,6 +3,7 @@ package org.example.userservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "students")
-public class User {
+public class User implements Serializable {
     @Id
     private String student_id;
     private String student_name;

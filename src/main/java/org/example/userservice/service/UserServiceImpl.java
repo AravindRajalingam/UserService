@@ -37,7 +37,10 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "user",key = "{#dept,#dob,#year}")
     public List<User> getUsersByDept(String dept,Date dob,int year) {
         LoggerFactory.getLogger(UserServiceImpl.class).info("Fetching from DB....");
-        return userRepository.findAll(Specification.where(UserSpecification.byDept(dept).and(UserSpecification.byYear(year))).and(UserSpecification.byDob(dob)));
+        final Specification<User> spec=Specification.where(UserSpecification.byDept(dept)
+                .and(UserSpecification.byYear(year))
+                .and(UserSpecification.byDob(dob)));
+        return userRepository.findAll(spec);
     }
 
     @Override
