@@ -12,4 +12,6 @@ public interface UserService {
     List<User> getUsersByDept(String dept,Date dob,int year);
     List<User> getUserByDob(Date dob);
     List<User> getUserByYear(int year);
+    void deleteFromCacheUsersByDept(String dept,Date dob,int year);
+    String removeAllCache();
 }

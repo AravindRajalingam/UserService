@@ -4,6 +4,9 @@ import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
 import org.example.userservice.specifications.UserSpecification;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -50,5 +53,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUserByYear(int year) {
         return userRepository.findAll(Specification.where(UserSpecification.byYear(year)));
+    }
+
+    @Override
+    @CacheEvict(value = "user", key = "{#dept,#dob,#year}" ,beforeInvocation = true)
+    public void deleteFromCacheUsersByDept(String dept,Date dob,int year) {
+
+    }
+
+    @Override
+    @CacheEvict(value = "user",allEntries = true,beforeInvocation = true)
+    public String removeAllCache() {
+        return "All cache removed.";
     }
 }

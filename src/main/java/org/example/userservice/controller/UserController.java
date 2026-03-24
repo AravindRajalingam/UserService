@@ -3,6 +3,7 @@ package org.example.userservice.controller;
 import org.example.userservice.util.JwtUtil;
 import org.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +54,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Sample endpoint");
     }
 
+    @DeleteMapping("/deleteCache")
+    public ResponseEntity<?> delete(@RequestParam String dept,@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,int year){
+        userService.deleteFromCacheUsersByDept(dept,dob,year);
+        return ResponseEntity.status(HttpStatus.OK).body("Removed from cache.");
+    }
 
+    @DeleteMapping("/deleteAllCache")
+    public ResponseEntity<?> deleteAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.removeAllCache());
+    }
 }
