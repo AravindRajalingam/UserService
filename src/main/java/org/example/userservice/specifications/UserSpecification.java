@@ -1,9 +1,14 @@
 package org.example.userservice.specifications;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import org.example.userservice.dto.Orders;
 import org.example.userservice.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserSpecification {
 
@@ -23,4 +28,17 @@ public class UserSpecification {
             return criteriaBuilder.equal(root.get("curr_year"),year);
         });
     }
+
+    public static Specification<User> notPresent(List<String> ids){
+        return ((root, query, criteriaBuilder) -> {
+            return criteriaBuilder.not(root.get("student_id").in(ids));
+        });
+    }
+
+//    public static Specification<User> not(){
+//        return ((root, query, criteriaBuilder) -> {
+//            Join<Object, Object> join = root.join("orders", JoinType.LEFT);
+//            return criteriaBuilder.isNull(join.get("order_id"));
+//        });
+//    }
 }

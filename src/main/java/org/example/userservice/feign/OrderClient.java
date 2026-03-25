@@ -13,4 +13,7 @@ public interface OrderClient {
 
     @GetMapping("/orders/ordersById")
     Map<String, List<Orders>> ordersByIds(@RequestParam List<String> ids);
+
+    @GetMapping("/orders/userswithorder")
+    List<String> usersWithOrder();
 }
