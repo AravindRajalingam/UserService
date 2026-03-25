@@ -72,4 +72,9 @@ public class UserController {
     public ResponseEntity<?> usersWithOrders(@RequestParam String dept){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(dept));
     }
+
+    @GetMapping("/api")
+    public ResponseEntity<?> response(){
+        return ResponseEntity.status(HttpStatus.OK).body("Response");
+    }
 }
