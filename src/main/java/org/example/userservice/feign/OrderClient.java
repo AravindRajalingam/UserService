@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient("order-service")
 public interface OrderClient {
 
     @GetMapping("/orders/ordersById")
-    List<Orders> ordersById(@RequestParam String id);
+    Map<String, List<Orders>> ordersByIds(@RequestParam List<String> ids);
 }
