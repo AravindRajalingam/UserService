@@ -93,6 +93,13 @@ public class UserServiceImpl implements UserService {
         return res;
     }
 
+    @Override
+    public List<User> usersWithoutOrders() {
+        List<String> ids=orderClient.usersWithOrder();
+        return userRepository.findAll(Specification.where(UserSpecification.notPresent(ids)));
+//        return userRepository.findAll(Specification.where(UserSpecification.not()));
+    }
+
     private static @NonNull List<OrderResponse> getOrderResponses(List<Orders> orders) {
         List<OrderResponse> orderResponses=new ArrayList<>();
         for(Orders order: orders){

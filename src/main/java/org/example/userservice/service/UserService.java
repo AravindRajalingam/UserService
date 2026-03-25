@@ -5,6 +5,7 @@ import org.example.userservice.response.UserAndOrders;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -17,4 +18,5 @@ public interface UserService {
     String removeAllCache();
     List<User> getUsersByDept(String dept);
     List<UserAndOrders> getUser(String dept);
+    List<User> usersWithoutOrders();
 }

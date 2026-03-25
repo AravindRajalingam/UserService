@@ -73,6 +73,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(dept));
     }
 
+    @GetMapping("/usersWithoutOrders")
+    public ResponseEntity<?> usersWithoutOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.usersWithoutOrders());
+    }
+
     @GetMapping("/api")
     public ResponseEntity<?> response(){
         return ResponseEntity.status(HttpStatus.OK).body("Response");

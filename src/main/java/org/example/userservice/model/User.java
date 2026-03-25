@@ -1,10 +1,13 @@
 package org.example.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.userservice.dto.Orders;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +28,10 @@ public class User implements Serializable {
 
     @Embedded
     private Address address;
+
+//    @OneToMany(mappedBy = "users")
+//    @JsonManagedReference
+//    private List<Orders> orders;
 }
 
 @Embeddable
