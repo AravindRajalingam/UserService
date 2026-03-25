@@ -1,6 +1,5 @@
 package org.example.userservice.service;
 
-import org.apache.logging.log4j.Logger;
 import org.example.userservice.dto.Orders;
 import org.example.userservice.feign.OrderClient;
 import org.example.userservice.model.User;
@@ -84,13 +83,9 @@ public class UserServiceImpl implements UserService {
         List<User> users=userRepository.findAll(Specification.where(UserSpecification.byDept(dept)));
         List<UserAndOrders> res =new ArrayList<>();
         for(User user:users){
-            UserAndOrders userAndOrders = new UserAndOrders();
-//            assert false;
-            userAndOrders.setUser_id(user.getStudent_id());
-            userAndOrders.setUsername(user.getStudent_name());
             List<Orders> orders=orderClient.ordersById(user.getStudent_id());
             List<OrderResponse> orderResponses = getOrderResponses(orders);
-            userAndOrders.setOrders(orderResponses);
+            UserAndOrders userAndOrders = UserAndOrders.builder().user_id(user.getStudent_id()).username(user.getStudent_name()).orders(orderResponses).build();
             res.add(userAndOrders);
         }
         return res;
@@ -99,12 +94,12 @@ public class UserServiceImpl implements UserService {
     private static @NonNull List<OrderResponse> getOrderResponses(List<Orders> orders) {
         List<OrderResponse> orderResponses=new ArrayList<>();
         for(Orders order: orders){
-            OrderResponse orderResponse=new OrderResponse();
-            String date= order.getOrder_day() +"-"+order.getOrder_month()+"-"+order.getOrder_year();
-            orderResponse.setOrder_id(order.getOrder_id());
-            orderResponse.setItem(order.getItem());
-            orderResponse.setQuantity(order.getQuantity());
-            orderResponse.setOrder_date(date);
+            OrderResponse orderResponse=OrderResponse.builder()
+                    .order_id(order.getOrder_id())
+                    .item(order.getItem())
+                    .quantity(order.getQuantity())
+                    .order_date(order.getOrder_day() +"-"+order.getOrder_month()+"-"+order.getOrder_year())
+                    .build();
             orderResponses.add(orderResponse);
         }
         return orderResponses;
