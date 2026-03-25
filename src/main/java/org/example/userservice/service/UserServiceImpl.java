@@ -14,10 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -82,8 +79,13 @@ public class UserServiceImpl implements UserService {
     public List<UserAndOrders> getUser(String dept) {
         List<User> users=userRepository.findAll(Specification.where(UserSpecification.byDept(dept)));
         List<UserAndOrders> res =new ArrayList<>();
+        List<String> userIds = users.stream()
+                .map(User::getStudent_id)
+                .toList();
+        Map<String, List<Orders>> ordersMap =
+                orderClient.ordersByIds(userIds);
         for(User user:users){
-            List<Orders> orders=orderClient.ordersById(user.getStudent_id());
+            List<Orders> orders=ordersMap.get(user.getStudent_id());
             List<OrderResponse> orderResponses = getOrderResponses(orders);
             UserAndOrders userAndOrders = UserAndOrders.builder().user_id(user.getStudent_id()).username(user.getStudent_name()).orders(orderResponses).build();
             res.add(userAndOrders);
