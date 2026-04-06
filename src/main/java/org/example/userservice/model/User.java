@@ -1,10 +1,14 @@
 package org.example.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.userservice.dto.Orders;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +22,7 @@ public class User implements Serializable {
     private String student_name;
     private String department;
     private int curr_year;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dob;
 
     @Transient
@@ -25,6 +30,10 @@ public class User implements Serializable {
 
     @Embedded
     private Address address;
+
+//    @OneToMany(mappedBy = "users")
+//    @JsonManagedReference
+//    private List<Orders> orders;
 }
 
 @Embeddable

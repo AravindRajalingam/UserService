@@ -17,4 +17,6 @@ public interface UserService {
     String removeAllCache();
     List<User> getUsersByDept(String dept);
     List<UserAndOrders> getUser(String dept);
+    List<User> usersWithoutOrders();
+   User userById(String id);
 }
