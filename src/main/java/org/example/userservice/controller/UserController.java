@@ -1,6 +1,7 @@
 package org.example.userservice.controller;
 
-import org.example.userservice.util.JwtUtil;
+import org.example.userservice.model.User;
+import org.example.userservice.serialization.Serialization;
 import org.example.userservice.service.UserService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -15,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService,JwtUtil jwtUtil) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -28,8 +30,7 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestHeader("Authorization") String token, @PathVariable String id){
         token=token.replace("Bearer ","");
 //        String userId= jwtUtil.getSubject(token);
-         String userId=id;
-        return ResponseEntity.status(HttpStatus.OK).body(userService.userNameById(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.userNameById(id).orElse(null));
     }
 
     @GetMapping("/byDept")
@@ -63,6 +64,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.removeAllCache());
     }
 
+    @GetMapping("/userById")
+    public ResponseEntity<?> userById(@RequestParam String id){
+        return ResponseEntity.status(HttpStatus.OK).body(Serialization.toJson(userService.userById(id)));
+    }
+
     @GetMapping("/userByDept")
     public ResponseEntity<?> userByDept(@RequestParam String dept){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersByDept(dept));
@@ -76,10 +82,5 @@ public class UserController {
     @GetMapping("/usersWithoutOrders")
     public ResponseEntity<?> usersWithoutOrders(){
         return ResponseEntity.status(HttpStatus.OK).body(userService.usersWithoutOrders());
-    }
-
-    @GetMapping("/api")
-    public ResponseEntity<?> response(){
-        return ResponseEntity.status(HttpStatus.OK).body("Response");
     }
 }

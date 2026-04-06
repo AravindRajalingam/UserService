@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "user",key = "{#dept,#dob,#year}")
     public List<User> getUsersByMulAttributes(String dept,Date dob,int year) {
         LoggerFactory.getLogger(UserServiceImpl.class).info("Fetching from DB....");
-        final Specification<User> spec=Specification.where(UserSpecification.byDept(dept)
+        Specification<User> spec=Specification.where(UserSpecification.byDept(dept)
                 .and(UserSpecification.byYear(year))
                 .and(UserSpecification.byDob(dob)));
         return userRepository.findAll(spec);
@@ -98,6 +98,11 @@ public class UserServiceImpl implements UserService {
         List<String> ids=orderClient.usersWithOrder();
         return userRepository.findAll(Specification.where(UserSpecification.notPresent(ids)));
 //        return userRepository.findAll(Specification.where(UserSpecification.not()));
+    }
+
+    @Override
+    public User userById(String id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     private static @NonNull List<OrderResponse> getOrderResponses(List<Orders> orders) {

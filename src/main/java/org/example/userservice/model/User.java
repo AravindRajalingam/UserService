@@ -1,5 +1,6 @@
 package org.example.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +22,7 @@ public class User implements Serializable {
     private String student_name;
     private String department;
     private int curr_year;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dob;
 
     @Transient
