@@ -16,8 +16,5 @@ public class Orders {
     private int order_day;
     private int order_month;
     private int order_year;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id" ,unique = true)
-//    @JsonBackReference
-//    private User users;
+
 }

@@ -30,10 +30,6 @@ public class User implements Serializable {
 
     @Embedded
     private Address address;
-
-//    @OneToMany(mappedBy = "users")
-//    @JsonManagedReference
-//    private List<Orders> orders;
 }
 
 @Embeddable

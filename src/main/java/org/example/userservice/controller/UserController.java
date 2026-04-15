@@ -3,6 +3,8 @@ package org.example.userservice.controller;
 import org.example.userservice.model.User;
 import org.example.userservice.serialization.Serialization;
 import org.example.userservice.service.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +18,25 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final RabbitTemplate rabbitTemplate;
 
-    public UserController(UserService userService) {
+    @Value("${spring.rabbitmq.routing-key}") private String routingKey;
+
+    public UserController(UserService userService, RabbitTemplate rabbitTemplate) {
         this.userService = userService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<?> get(){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll());
+        try{
+            List<User> users=userService.getAll();
+            rabbitTemplate.convertAndSend("sample_exchange",routingKey,Serialization.toJson(users.get(0)));
+            return ResponseEntity.status(HttpStatus.OK).body(users);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/loginUser/{id}")
@@ -66,7 +79,7 @@ public class UserController {
 
     @GetMapping("/userById")
     public ResponseEntity<?> userById(@RequestParam String id){
-        return ResponseEntity.status(HttpStatus.OK).body(Serialization.toJson(userService.userById(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(Serialization.fromJson(Serialization.toJson(userService.userById(id)),User.class));
     }
 
     @GetMapping("/userByDept")
